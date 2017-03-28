@@ -1,22 +1,23 @@
-####术语解释
-######token:
+#### 术语解释
+###### token:
  是一个随机字符串，用来代替原始数据。    
-#####Tokenization
+##### Tokenization
 Tokenization是将数据标记成随机字符串token。和加密不同，标记化不使用数学过程对敏感信息转换成，也就是说生成的token是不可逆的。
 Tokenization通常使用数据库（或者其他方式）存储敏感值与token之间的关系。
 
-####Encrypt
+#### Encrypt
 ![image1](./tokenize_pic/In_Page_Encryption_Decryption_Diagram_700.png)
 
-####Tokenization
+#### Tokenization
 ![image1](./tokenize_pic/In_Page_How_Tokenization_Works_700.png)
 
-####MD5功能：
+#### MD5功能：
     输入任意长度的信息，经过处理，输出为128位的信息（数字指纹)。
     不同的输入得到的不同的结果（唯一性）。
     MD5不属于加密算法,一般用来做数字签名和数据校验，防止数据被篡改。
 
-####Encrypt和Tokenization对比
+#### Encrypt和Tokenization对比 
+
 Encrtpy |  Tokenization | 
 :----------- | :-----------  | 
 使用加密算法和密钥，通过数学公式转换将原始数据生成密文         		| 随机生成的token值，原始数据和token值在数据库中存储的映射关系        | 
@@ -25,7 +26,7 @@ Encrtpy |  Tokenization |
 与第三方交互只需要密钥就可以获取原始数据|第三方很难获取原始数据，因为必须得到数据库映射token值才能直接获取原始数据|
 原始数据以加密的方式离开企业|原始数据永远不会离开企业，满足一定的合规要求|
 
-####Tokenization优点
+#### Tokenization优点
 
 ```
 1.减少数据泄露:tokenization的一个关键优势是原始数据只值存储在企业服务器内部,这样可以减少原始数据泄露。由于token值和原始数据没有数学关系，其过程不可逆，即使获取到token值也没什么意义。
