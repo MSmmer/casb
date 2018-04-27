@@ -1,0 +1,98 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <title></title>
+<style id="system" type="text/css">h1,h2,h3,h4,h5,h6,p,blockquote {    margin: 0;    padding: 0;}body {    font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", Arial, sans-serif;    font-size: 13px;    line-height: 18px;    color: #737373;    margin: 10px 13px 10px 13px;}a {    color: #0069d6;}a:hover {    color: #0050a3;    text-decoration: none;}a img {    border: none;}p {    margin-bottom: 9px;}h1,h2,h3,h4,h5,h6 {    color: #404040;    line-height: 36px;}h1 {    margin-bottom: 18px;    font-size: 30px;}h2 {    font-size: 24px;}h3 {    font-size: 18px;}h4 {    font-size: 16px;}h5 {    font-size: 14px;}h6 {    font-size: 13px;}hr {    margin: 0 0 19px;    border: 0;    border-bottom: 1px solid #ccc;}blockquote {    padding: 13px 13px 21px 15px;    margin-bottom: 18px;    font-family:georgia,serif;    font-style: italic;}blockquote:before {    content:"C";    font-size:40px;    margin-left:-10px;    font-family:georgia,serif;    color:#eee;}blockquote p {    font-size: 14px;    font-weight: 300;    line-height: 18px;    margin-bottom: 0;    font-style: italic;}code, pre {    font-family: Monaco, Andale Mono, Courier New, monospace;}code {    background-color: #fee9cc;    color: rgba(0, 0, 0, 0.75);    padding: 1px 3px;    font-size: 12px;    -webkit-border-radius: 3px;    -moz-border-radius: 3px;    border-radius: 3px;}pre {    display: block;    padding: 14px;    margin: 0 0 18px;    line-height: 16px;    font-size: 11px;    border: 1px solid #d9d9d9;    white-space: pre-wrap;    word-wrap: break-word;}pre code {    background-color: #fff;    color:#737373;    font-size: 11px;    padding: 0;}@media screen and (min-width: 768px) {    body {        width: 748px;        margin:10px auto;    }}</style><style id="custom" type="text/css"></style></head>
+<body marginheight="0"><h1>定位过程分析</h1>
+<h1>0x01、关键现象</h1>
+<pre><code>1、多个域名中只有一个老域名出现卡顿
+
+2、高峰期容易卡顿
+
+3、pdk7004承载主要游戏业务，探测端口响应较慢</code></pre>
+<h1>0x02排查过程</h1>
+<h2>华为侧</h2>
+<h3>界面配置</h3>
+<pre><code>1、梳理用户配置的规则
+
+2、确认后台规则以加载生效
+
+3、确认域名解析是否正常
+
+4、测试源站域名、IP、端口
+
+5、测试高防IP、端口
+
+6、80端口开启waf,8101使用的tcp转发</code></pre>
+<h3>线路、IDC机房</h3>
+<pre><code>1、是否是小运营商流量
+
+2、运营商安全策略，可能会拦截
+
+3、IDC机房安全策略</code></pre>
+<h3>时延</h3>
+<pre><code>1、高峰期有问题时,测试线路电信、移动、联通时延
+
+2、测试线路电信、移动、联通时延
+
+3、测试高防IP各线路时延</code></pre>
+<h3>流量拦截</h3>
+<pre><code>1、DDOS防护策略
+
+2、交换机
+
+3、转发规则
+
+4、waf</code></pre>
+<h3>回源IP</h3>
+<pre><code>1、回源IP加入白名单</code></pre>
+<h2>阿里侧</h2>
+<h3>ECS本地防护</h3>
+<pre><code>1、安琦士配置
+
+2、防火墙配置
+
+3、本地清洗
+
+4、与阿里客服沟通
+
+5、内部搭建阿里云测试环境</code></pre>
+<h3>ECS</h3>
+<pre><code>1、ECS处理能力
+
+2、出问题时服务器状态
+
+3、主机socket及ulimit限制
+
+4、帐号服务器和游戏服务器限制连接数
+
+5、低峰期、低峰期业务抓包对比
+
+6、客户端与服务端ACK状态检测机制
+
+8、游戏业务架构和数据流程
+
+9、域名、端口、源站交互关系图
+
+10、windows防火墙设置及linux iptables规则
+
+11、系统关键进程状态查看tomcat、httpd、mysql、游戏服
+
+12、登录服、工会服、游戏服异常日志分析</code></pre>
+<h2>目前进展</h2>
+<pre><code>修改单IP参数后，当前两天未接到用户反馈</code></pre>
+<h2>建议</h2>
+<pre><code>1、根据实际情况修改以下参数，设置太小可能会导致丢包
+MaxConnOfIPaddr      //单IP最大链接数
+MaxClientMsgCount    //同链接每秒不能超过15个  
+ClientTimeOutTime    //链接后10s未进行登陆断开链接
+
+2、优化客户端与服务端心跳机制
+目前心跳机制在代码中写死，无法修改心跳时间，在网络抖动的情况下容易出现断线重连的异常日志。
+
+3、tomcat异常重启，建议排查重启原因
+
+4、内存占有长期超过%85，建议扩容处理
+
+5、tomcat对http头大小设置过小，容易引发404错误。建议修改maxHttpHeaderSize参数</code></pre>
+<p>Edit By <a href="http://mahua.jser.me">MaHua</a></p>
+</body></html>
